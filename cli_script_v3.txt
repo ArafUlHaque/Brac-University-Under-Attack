@@ -1,0 +1,105 @@
+# DHCP Server CSE_Pool configuration
+
+Pool Name: CSE_Pool
+
+Default Gateway: 172.16.0.1
+
+DNS Server: 172.16.15.5
+
+Start IP Address: 172.16.0.2
+
+Subnet Mask: 255.255.248.0 (/21)
+
+Maximum no. of users = 1500
+
+Excluded IPs: 172.16.7.254
+
+# DHCP Server EEE_Pool configuration
+
+Pool Name: EEE_Pool
+
+Default Gateway: 172.16.8.1
+
+DNS Server: 172.16.15.5
+
+Start IP Address: 172.16.8.2
+
+Subnet Mask: 255.255.252.0 (/22)
+
+Maximum no. of users = 800
+
+Excluded IPs: 172.16.11.254
+
+Pool Name: MNS_Pool
+
+Default Gateway: 172.16.12.1
+
+DNS Server: 172.16.15.5
+
+Start IP Address: 172.16.12.2
+
+Subnet Mask: 255.255.254.0 (/23)
+
+Maximum no. of users = 100
+
+Excluded IPs: 172.16.13.254
+
+#Supercomputer IP configurations 
+
+
+Building	Super Computer Static IP	Subnet Mask	Default Gateway
+CSE	172.16.7.254	255.255.248.0	172.16.0.1
+EEE	172.16.11.254	255.255.252.0	172.16.8.1
+MNS	172.16.13.254	255.255.254.0	172.16.12.1
+Admin	172.16.14.254	255.255.255.0	172.16.14.1
+Server	172.16.15.6	255.255.255.248	172.16.15.1
+
+
+DNS server for all supercomputers - 172.16.15.5
+
+### Rip configuration for all 3 servers (same commands)
+
+enable
+configure terminal
+router rip
+version 2
+no auto-summary
+network 172.16.0.0
+exit
+
+
+### Static Routing for Server Building
+
+enable
+configure terminal
+ip route 0.0.0.0 0.0.0.0 172.16.15.21
+exit
+
+
+### Admin Router Configuration
+
+enable
+configure terminal
+ip route 172.16.15.0 255.255.255.248 172.16.15.22
+router rip
+redistribute static
+exit
+
+### Helper ip configuration for all routers (same commands)
+
+enable
+configure terminal
+interface g0/0
+ip helper-address 172.16.15.5
+exit
+
+
+
+
+
+
+
+
+
+
+
