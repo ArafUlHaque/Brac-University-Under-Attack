@@ -1,0 +1,145 @@
+# - Lines starting with # are comments for documentation.
+# EEE ROUTER CONFIGURATION
+############################
+enable
+conf t
+hostname EEE_Router
+
+# EEE LAN Interface
+interface g0/0
+ ip address 172.16.8.1 255.255.252.0
+ no shutdown
+exit
+
+# EEE ↔ Admin WAN (EEE is DCE)
+interface s0/0/0
+ ip address 172.16.15.13 255.255.255.252
+ clock rate 64000
+ no shutdown
+exit
+
+# DHCP Relay for EEE LAN
+interface g0/0
+ ip helper-address 172.16.15.5
+exit
+
+end
+wr
+
+
+############################
+# MNS ROUTER CONFIGURATION
+############################
+enable
+conf t
+hostname MNS_Router
+
+# MNS LAN Interface
+interface g0/0
+ ip address 172.16.12.1 255.255.254.0
+ no shutdown
+exit
+
+# MNS ↔ Admin WAN (MNS is DCE)
+interface s0/0/0
+ ip address 172.16.15.17 255.255.255.252
+ clock rate 64000
+ no shutdown
+exit
+
+# DHCP Relay for MNS LAN
+interface g0/0
+ ip helper-address 172.16.15.5
+exit
+
+end
+wr
+
+
+############################
+# CSE ROUTER CONFIGURATION
+# (Recovered and Fixed)
+############################
+enable
+conf t
+hostname CSE_Router
+
+# CSE LAN Interface
+interface g0/0
+ ip address 172.16.0.1 255.255.248.0
+ no shutdown
+exit
+
+# CSE ↔ Admin WAN (CSE is DCE)
+interface s0/0/0
+ ip address 172.16.15.9 255.255.255.252
+ clock rate 64000
+ no shutdown
+exit
+
+end
+wr
+
+
+############################
+# ADMIN ROUTER CONFIGURATION
+############################
+enable
+conf t
+hostname Admin_Router
+
+# Admin LAN Interface
+interface g0/0
+ ip address 172.16.14.1 255.255.255.0
+ no shutdown
+exit
+
+# Admin ↔ CSE (Admin is DTE)
+interface s0/0/0
+ ip address 172.16.15.10 255.255.255.252
+ no shutdown
+exit
+
+# Admin ↔ EEE (Admin is DTE)
+interface s0/0/1
+ ip address 172.16.15.14 255.255.255.252
+ no shutdown
+exit
+
+# Admin ↔ MNS (Admin is DTE)
+interface s0/1/0
+ ip address 172.16.15.18 255.255.255.252
+ no shutdown
+exit
+
+# Admin ↔ Server (Admin is DTE)
+interface s0/1/1
+ ip address 172.16.15.21 255.255.255.252
+ no shutdown
+exit
+
+end
+wr
+
+
+############################
+# SERVER ROUTER CONFIGURATION
+############################
+enable
+conf t
+hostname Server_Router
+
+# Server LAN Interface
+interface g0/0
+ ip address 172.16.15.1 255.255.255.248
+ no shutdown
+exit
+
+# Server ↔ Admin WAN (Server is DTE)
+interface s0/0/0
+ ip address 172.16.15.22 255.255.255.252
+ no shutdown
+exit
+
+end
+wr
